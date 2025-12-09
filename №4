@@ -1,0 +1,55 @@
+{
+    public class Book
+    {
+        private string[] chapters = new string[10];
+        private int chapterCount = 0;
+
+        public string this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= chapters.Length)
+                    throw new IndexOutOfRangeException("Индекс главы выходит за пределы допустимого диапазона.");
+
+                return chapters[index];
+            }
+            set
+            {
+                if (index < 0)
+                    throw new IndexOutOfRangeException("Индекс главы не может быть отрицательным.");
+
+                if (index >= chapters.Length)
+                {
+                    Array.Resize(ref chapters, index + 1);
+                }
+
+                chapters[index] = value;
+                if (index >= chapterCount)
+                    chapterCount = index + 1;
+            }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < chapterCount; i++)
+            {
+                if (chapters[i] != null)
+                    sb.AppendLine($"{i + 1}. {chapters[i]}");
+            }
+            return sb.ToString();
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var book = new Book();
+            book[0] = "Введение";
+            book[1] = "Глава 1";
+            Console.WriteLine(book[0]);
+            Console.WriteLine(book);
+        }
+    }
+}
